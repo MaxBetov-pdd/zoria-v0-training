@@ -105,6 +105,7 @@ def benchmark(adapter: str | None = None) -> None:
         "--limit",
         "50",
         "--apply_chat_template",
+        "--confirm_run_unsafe_code",
         "--output_path",
         "eval-results/qwen35-9b-colab"
         + ("-adapter" if adapter else "-base"),
