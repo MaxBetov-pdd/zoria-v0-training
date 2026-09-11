@@ -44,6 +44,19 @@ Run the pilot helper:
 The helper uses a small cap of 3,000 examples per source. It does not add the
 official leaderboard test questions to training.
 
+`baseline` and `benchmark-adapter` are quick smoke evaluations with 50
+examples per task. For the complete active leaderboard group, run:
+
+```python
+!python colab/qwen35_9b_colab.py --mode baseline-full
+!python colab/qwen35_9b_colab.py --mode benchmark-adapter-full
+```
+
+The full modes use `--tasks ukrainian_bench` without `--limit`. They include
+all active tasks from the pinned leaderboard repository. Some repository
+tasks remain intentionally disabled upstream, such as SQuAD, Hellaswag and
+the TODO MMLU task; they are not silently replaced by the smoke subset.
+
 ## One-A100 runtime
 
 If Colab gives you an A100, use the larger pilot:

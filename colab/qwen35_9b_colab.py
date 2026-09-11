@@ -14,6 +14,7 @@ MODEL = "Qwen/Qwen3.5-9B"
 DATA_DIR = ROOT / "data" / "processed-colab"
 ADAPTER_DIR = ROOT / "outputs" / "zoria-qwen35-9b"
 TASKS = "belebele_ukr_Cyrl,xlsum_uk,ifeval_uk"
+FULL_TASKS = "ukrainian_bench"
 BENCHMARK_DIR = ROOT / "benchmarks" / "ukrainian-llm-leaderboard"
 
 
@@ -79,7 +80,7 @@ def ensure_benchmark_repo() -> None:
     )
 
 
-def benchmark(adapter: str | None = None) -> None:
+def benchmark(adapter: str | None = None, full: bool = False) -> None:
     ensure_benchmark_repo()
     env = os.environ.copy()
     env["TOKENIZERS_PARALLELISM"] = "false"
@@ -90,28 +91,29 @@ def benchmark(adapter: str | None = None) -> None:
     model_args = f"pretrained={MODEL},dtype=float16,device_map=auto"
     if adapter:
         model_args += f",peft={adapter}"
-    run(
+    args = [
         "lm_eval",
         "--model",
         "hf",
         "--model_args",
         model_args,
         "--tasks",
-        TASKS,
+        FULL_TASKS if full else TASKS,
         "--include_path",
         "benchmarks/ukrainian-llm-leaderboard/tasks",
         "--batch_size",
         "1",
-        "--limit",
-        "50",
         "--apply_chat_template",
         "--confirm_run_unsafe_code",
         "--output_path",
         "eval-results/qwen35-9b-colab"
-        + ("-adapter" if adapter else "-base"),
+        + ("-adapter" if adapter else "-base")
+        + ("-full" if full else "-smoke"),
         "--log_samples",
-        env=env,
-    )
+    ]
+    if not full:
+        args.extend(["--limit", "50"])
+    run(*args, env=env)
 
 
 def main() -> None:
@@ -125,7 +127,9 @@ def main() -> None:
             "train",
             "a100-smoke",
             "a100-train",
+            "baseline-full",
             "benchmark-adapter",
+            "benchmark-adapter-full",
         ),
         required=True,
     )
@@ -156,8 +160,13 @@ def main() -> None:
             "train",
             "configs/qwen3.5-9b-colab-a100.yaml",
         )
+    elif args.mode == "baseline-full":
+        prepare()
+        benchmark(full=True)
     elif args.mode == "benchmark-adapter":
         benchmark(str(ADAPTER_DIR))
+    elif args.mode == "benchmark-adapter-full":
+        benchmark(str(ADAPTER_DIR), full=True)
 
 
 if __name__ == "__main__":
