@@ -29,7 +29,7 @@ uv venv --python 3.12
 # shellcheck disable=SC1091
 source .venv/bin/activate
 
-uv pip install --upgrade --no-build-isolation "axolotl[deepspeed]" torchvision
+uv pip install --no-build-isolation "axolotl[deepspeed]==0.18.0" torchvision
 uv pip install "cut-cross-entropy[transformers] @ git+https://github.com/axolotl-ai-cloud/ml-cross-entropy.git@4dfa522"
 uv pip install --upgrade \
   "huggingface_hub[hf_transfer]" \

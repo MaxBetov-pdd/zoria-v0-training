@@ -8,6 +8,8 @@ replay portion.
 
 The VPS scripts target **Ubuntu 24.04**, Python 3.12, PyTorch 2.12.1 and
 CUDA 12.8 on the selected 4×A100 host. Axolotl is installed through `uv`.
+The pinned Axolotl release is `0.18.0`; the provider must expose NVIDIA
+driver 570.26 or newer.
 
 ## Files
 
@@ -28,6 +30,8 @@ CUDA 12.8 on the selected 4×A100 host. Axolotl is installed through `uv`.
 ## VPS order
 
 ```bash
+git clone https://github.com/MaxBetov-pdd/zoria-v0-training.git zoria
+cd zoria
 bash scripts/bootstrap_vps.sh
 source .venv/bin/activate
 bash scripts/preflight_4xa100.sh
@@ -38,3 +42,5 @@ bash scripts/run_4xa100_smoke.sh
 
 Do not start the 300-step run until the baseline and smoke test complete.
 Do not download the full Kobza or FinePDFs corpus for v0.
+
+The same kit is available as a [ZIP release](https://github.com/MaxBetov-pdd/zoria-v0-training/releases/latest).

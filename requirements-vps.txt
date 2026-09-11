@@ -1,0 +1,12 @@
+# Ubuntu 24.04 / Python 3.12 / NVIDIA A100 / CUDA 12.8
+# Axolotl's official requirements are installed by bootstrap_vps.sh.
+axolotl==0.18.0
+torch==2.12.1
+torchvision
+datasets
+huggingface_hub[hf_transfer]
+lm-eval
+langdetect
+immutabledict
+pyyaml
+tqdm
