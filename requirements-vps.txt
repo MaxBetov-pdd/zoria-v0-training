@@ -3,7 +3,7 @@
 axolotl==0.18.0
 torch==2.12.1
 torchvision
-datasets
+datasets<4
 huggingface_hub[hf_transfer]
 lm-eval
 langdetect

@@ -20,7 +20,7 @@ Create a new Colab notebook and select a GPU runtime. Then run:
 ```python
 !git clone https://github.com/MaxBetov-pdd/zoria-v0-training.git /content/zoria
 %cd /content/zoria
-!pip install -U "axolotl[deepspeed]==0.18.0" torchvision datasets tqdm pyyaml
+!pip install -U "axolotl[deepspeed]==0.18.0" torchvision "datasets<4" tqdm pyyaml
 !pip install -U "cut-cross-entropy[transformers] @ git+https://github.com/axolotl-ai-cloud/ml-cross-entropy.git@4dfa522"
 !pip install -U "lm-eval[hf]"
 ```
@@ -75,3 +75,6 @@ Run the smoke config first. If it still fails:
 The Qwen3.5 family has official Axolotl QLoRA support and uses hybrid
 Gated DeltaNet plus standard attention. The Colab run is text-only; vision
 training is reserved for a later version.
+
+The leaderboard repository still contains a legacy `xlsum.py` dataset script,
+so the Colab environment intentionally pins `datasets<4`.
