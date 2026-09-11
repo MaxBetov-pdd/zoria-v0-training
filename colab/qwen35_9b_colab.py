@@ -36,6 +36,21 @@ def prepare() -> None:
     )
 
 
+def prepare_a100() -> None:
+    output_dir = ROOT / "data" / "processed-colab-a100"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    run(
+        sys.executable,
+        "scripts/prepare_mvp_data.py",
+        "--output-dir",
+        str(output_dir),
+        "--max-per-source",
+        "5000",
+        "--seed",
+        "42",
+    )
+
+
 def ensure_benchmark_repo() -> None:
     if BENCHMARK_DIR.exists():
         return
@@ -91,7 +106,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--mode",
-        choices=("prepare", "baseline", "smoke", "train", "benchmark-adapter"),
+        choices=(
+            "prepare",
+            "baseline",
+            "smoke",
+            "train",
+            "a100-smoke",
+            "a100-train",
+            "benchmark-adapter",
+        ),
         required=True,
     )
     args = parser.parse_args()
@@ -107,6 +130,20 @@ def main() -> None:
     elif args.mode == "train":
         prepare()
         run("axolotl", "train", "configs/qwen3.5-9b-colab-qlora.yaml")
+    elif args.mode == "a100-smoke":
+        prepare_a100()
+        run(
+            "axolotl",
+            "train",
+            "configs/qwen3.5-9b-colab-a100-smoke.yaml",
+        )
+    elif args.mode == "a100-train":
+        prepare_a100()
+        run(
+            "axolotl",
+            "train",
+            "configs/qwen3.5-9b-colab-a100.yaml",
+        )
     elif args.mode == "benchmark-adapter":
         benchmark(str(ADAPTER_DIR))
 

@@ -26,6 +26,7 @@ driver 570.26 or newer.
 - `colab/README.md` — Google Colab pilot instructions for Qwen3.5-9B.
 - `colab/qwen35_9b_colab.py` — prepare, baseline, smoke, train and benchmark
   runner.
+- `configs/qwen3.5-9b-colab-a100.yaml` — one-A100 pilot config.
 - `VPS_CHECKLIST.md` — provider checks and stop conditions.
 - `benchmarks/ukrainian-llm-leaderboard` — pinned evaluation repository at
   commit `74d8069`.

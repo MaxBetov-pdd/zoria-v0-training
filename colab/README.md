@@ -44,6 +44,20 @@ Run the pilot helper:
 The helper uses a small cap of 3,000 examples per source. It does not add the
 official leaderboard test questions to training.
 
+## One-A100 runtime
+
+If Colab gives you an A100, use the larger pilot:
+
+```python
+!nvidia-smi --query-gpu=name,memory.total --format=csv
+!python colab/qwen35_9b_colab.py --mode baseline
+!python colab/qwen35_9b_colab.py --mode a100-smoke
+!python colab/qwen35_9b_colab.py --mode a100-train
+```
+
+The A100 config uses 2,048-token sequences, BF16 and 300 steps. Start with
+the smoke test before spending the remaining runtime.
+
 ## If the 16GB runtime runs out of memory
 
 Run the smoke config first. If it still fails:
