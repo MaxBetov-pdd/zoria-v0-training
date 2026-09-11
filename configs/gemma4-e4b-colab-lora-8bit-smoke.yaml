@@ -1,0 +1,60 @@
+# Gemma 4 E4B 8-bit LoRA smoke test for one Colab A100.
+
+base_model: google/gemma-4-E4B-it
+processor_type: AutoProcessor
+freeze_mm_modules: true
+strict: false
+
+# Gemma 4 is multimodal, but this pilot uses text-only messages.
+skip_prepare_dataset: true
+remove_unused_columns: false
+sample_packing: false
+chat_template: gemma4
+eot_tokens:
+  - "<turn|>"
+
+plugins:
+  - axolotl.integrations.cut_cross_entropy.CutCrossEntropyPlugin
+
+datasets:
+  - path: ./data/processed-colab-a100/zoria_v0_train.jsonl
+    type: chat_template
+    field_messages: messages
+
+dataset_prepared_path: ./data/prepared-gemma4-smoke
+val_set_size: 0.02
+output_dir: ./outputs/zoria-gemma4-e4b-smoke
+
+sequence_len: 1024
+pad_to_sequence_len: false
+
+load_in_8bit: true
+adapter: lora
+lora_r: 32
+lora_alpha: 64
+lora_dropout: 0.05
+lora_target_modules: 'model.language_model.layers.[\d]+.(_checkpoint_wrapped_module.)?(mlp|self_attn).(up|down|gate|q|k|v|o)_proj'
+
+gradient_accumulation_steps: 4
+micro_batch_size: 1
+max_steps: 20
+optimizer: adamw_bnb_8bit
+lr_scheduler: cosine
+learning_rate: 0.0001
+warmup_ratio: 0.1
+weight_decay: 0.01
+
+bf16: true
+fp16: false
+tf32: true
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+activation_offloading: true
+attn_implementation: sdpa
+
+logging_steps: 1
+eval_steps: 10
+save_steps: 20
+save_total_limit: 1
+seed: 42

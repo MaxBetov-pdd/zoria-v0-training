@@ -94,3 +94,18 @@ training is reserved for a later version.
 
 The leaderboard repository still contains a legacy `xlsum.py` dataset script,
 so the Colab environment intentionally pins `datasets<4`.
+
+## Gemma 4 E4B alternative
+
+The current recommended A100 pilot is now Gemma 4 E4B with 8-bit LoRA:
+
+```python
+!python colab/gemma4_e4b_colab.py --mode sanity
+!python colab/gemma4_e4b_colab.py --mode smoke
+!python colab/gemma4_e4b_colab.py --mode train
+```
+
+Gemma 4 is multimodal, but this first pilot freezes vision and audio and
+trains only the language model on text. Official leaderboard evaluation for
+Gemma 4 needs a multimodal-compatible backend; the sanity and training stages
+come first.

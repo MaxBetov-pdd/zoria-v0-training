@@ -27,6 +27,8 @@ driver 570.26 or newer.
 - `colab/qwen35_9b_colab.py` — prepare, baseline, smoke, train and benchmark
   runner.
 - `configs/qwen3.5-9b-colab-a100.yaml` — one-A100 pilot config.
+- `configs/gemma4-e4b-colab-lora-8bit.yaml` — Gemma 4 E4B 8-bit LoRA pilot.
+- `colab/gemma4_e4b_colab.py` — Gemma 4 sanity, smoke and training runner.
 - `VPS_CHECKLIST.md` — provider checks and stop conditions.
 - `benchmarks/ukrainian-llm-leaderboard` — pinned evaluation repository at
   commit `74d8069`.

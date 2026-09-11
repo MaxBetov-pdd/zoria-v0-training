@@ -180,3 +180,18 @@ text-only Ukrainian SFT
 
 Технически избыточен для MVP и стоит намного дороже. Он понадобится только
 для будущего full-weight/distributed research, а не для текущей QLoRA.
+
+## Colab pilot
+
+Для промежуточного A100-пилота используем:
+
+```text
+Base: google/gemma-4-E4B-it
+Quantization: 8-bit BitsAndBytes
+Training: LoRA
+Vision/audio: frozen
+Data: text-only Ukrainian SFT
+```
+
+Этот этап нужен для проверки data pipeline и получения первого публичного
+результата. Финальная Lambda-модель остаётся Qwen3.8-Flash-Next.
