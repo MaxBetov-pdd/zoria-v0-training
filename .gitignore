@@ -1,0 +1,11 @@
+.venv/
+hf-cache/
+benchmarks/
+references/
+data/prepared/
+data/processed/*.jsonl
+data/processed/*.json
+outputs/
+wandb/
+__pycache__/
+*.pyc

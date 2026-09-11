@@ -1,0 +1,116 @@
+# Zoria MVP data sources
+
+# Primary v0 sources are the ones with stage: mvp. The preparation script
+# contains the exact caps and emits one deterministic training file.
+# Do not download Kobza in full for v0.
+sources:
+  - id: grammarly/spivavtor
+    role: Ukrainian grammar, simplification, coherence, paraphrasing
+    stage: mvp
+    license: CC-BY-4.0
+    size: small
+    notes: 69,760 examples; inspect and cite source
+
+  - id: FIdo-AI/ua-squad
+    role: Ukrainian extractive QA
+    stage: mvp
+    license: MIT
+    size: small
+    notes: use train/validation; keep any hidden/test split out of training
+
+  - id: lapa-llm/hermes3-uk
+    role: Ukrainian instruction, QA, summarization, conversation
+    stage: mvp
+    license: CC-BY-SA-4.0
+    size: small_or_medium
+    notes: verify schema and license compatibility before redistribution
+
+  - id: lapa-llm/wiki-facts-conversations
+    role: Ukrainian factual knowledge and culture conversations
+    stage: mvp
+    license: inspect dataset card
+    size: small_or_medium
+    notes: useful for Ukrainian history, culture and factual QA
+
+  - id: lapa-llm/summaries
+    role: Ukrainian summarization
+    stage: optional
+    license: inspect dataset card
+    size: small
+    notes: use for XLSUM-like summarization behaviour
+
+  - id: lapa-llm/impossible-questions
+    role: Ukrainian uncertainty and unanswerable-question behaviour
+    stage: mvp
+    license: inspect dataset card
+    size: small
+    notes: helps reduce confident hallucination
+
+  - id: lapa-llm/antipropaganda-safe
+    role: Ukrainian factuality and safe response behaviour
+    stage: mvp
+    license: inspect dataset card
+    size: small_or_medium
+    notes: keep as a small mixture component, not the dominant dataset
+
+  - id: lapa-llm/fiftyfive-best
+    role: high-quality English-Ukrainian translation
+    stage: mvp
+    license: inspect dataset card
+    size: medium
+    notes: Lapa selected the top 10% after ensemble quality estimation
+
+  - id: lapa-llm/openthoughts_no_think
+    role: English/Ukrainian reasoning and coding retention
+    stage: later_experiment
+    license: inspect dataset card
+    size: medium
+    notes: use a small amount to avoid changing Qwen's reasoning style
+
+  - id: zeusfsx/ukrainian-stackexchange
+    role: technical QA and explanations
+    stage: optional
+    license: CC-BY-SA-4.0
+    size: small
+    notes: inspect for duplicates and benchmark contamination
+
+  - id: Goader/kobza
+    role: Ukrainian raw text for CPT
+    stage: later_cpt
+    license: CC0 packaging; source-level licenses vary
+    size: very_large
+    notes: about 60B tokens and about 150GB compressed parquet; stream/filter, do not download fully for MVP
+
+  - id: podarok/kobza-cleaned-ua
+    role: Ukrainian-only raw text pilot
+    stage: later_cpt_candidate
+    license: CC-BY-4.0
+    size: medium
+    notes: cleaned derivative; still requires quality filtering and provenance review
+
+  - id: HuggingFaceFW/finepdfs
+    role: Ukrainian documents and long-context CPT
+    stage: later_cpt
+    license: source-dependent
+    size: very_large
+    notes: use only after storage and licensing plan are ready
+
+# Replay data should be selected with compatible licenses and kept separate from Ukrainian data.
+replay:
+  - id: HuggingFaceTB/smoltalk
+    role: English/general instruction retention
+    stage: optional_replay
+    license: verify dataset card before redistribution
+    notes: stream a small subset; record exact revision
+  - id: open-r1/Mixture-of-Thoughts
+    role: English/code/math/reasoning retention
+    stage: later_experiment
+    license: verify dataset card before redistribution
+    notes: use a small subset; never mix benchmark evaluation questions
+
+# Never train on official leaderboard evaluation sets or private holdout examples.
+benchmarks:
+  repository: ./benchmarks/ukrainian-llm-leaderboard
+  policy: evaluation_only
+
+
