@@ -74,6 +74,9 @@ the smoke test before spending the remaining runtime.
 For evaluation, the helper loads the 9B base in FP16 because an A100 has
 enough VRAM and the current `lm-eval` Transformers backend does not accept
 `load_in_4bit` directly for Qwen3.5. Training still uses NF4 QLoRA.
+Evaluation disables thinking so generative Ukrainian tasks score the final
+answer rather than the hidden reasoning trace. Baseline and adapter use the
+same setting.
 
 ## If the 16GB runtime runs out of memory
 

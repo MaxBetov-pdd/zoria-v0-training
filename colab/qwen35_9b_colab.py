@@ -88,7 +88,10 @@ def benchmark(adapter: str | None = None, full: bool = False) -> None:
     # A100 has enough VRAM for FP16 evaluation of the 9B model. Training
     # remains 4-bit QLoRA. The current lm-eval/Transformers path for
     # Qwen3.5 does not accept load_in_4bit as a direct model constructor kwarg.
-    model_args = f"pretrained={MODEL},dtype=float16,device_map=auto"
+    model_args = (
+        f"pretrained={MODEL},dtype=float16,device_map=auto,"
+        "enable_thinking=False"
+    )
     if adapter:
         model_args += f",peft={adapter}"
     args = [
