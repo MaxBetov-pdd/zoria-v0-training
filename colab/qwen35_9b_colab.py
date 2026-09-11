@@ -24,6 +24,11 @@ def run(*args: str, env: dict[str, str] | None = None) -> None:
 
 def prepare() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if (DATA_DIR / "zoria_v0_manifest.json").exists() and (
+        DATA_DIR / "zoria_v0_train.jsonl"
+    ).exists():
+        print(f"Using existing prepared data in {DATA_DIR}")
+        return
     run(
         sys.executable,
         "scripts/prepare_mvp_data.py",
@@ -39,6 +44,11 @@ def prepare() -> None:
 def prepare_a100() -> None:
     output_dir = ROOT / "data" / "processed-colab-a100"
     output_dir.mkdir(parents=True, exist_ok=True)
+    if (output_dir / "zoria_v0_manifest.json").exists() and (
+        output_dir / "zoria_v0_train.jsonl"
+    ).exists():
+        print(f"Using existing prepared data in {output_dir}")
+        return
     run(
         sys.executable,
         "scripts/prepare_mvp_data.py",
@@ -74,9 +84,10 @@ def benchmark(adapter: str | None = None) -> None:
     env = os.environ.copy()
     env["TOKENIZERS_PARALLELISM"] = "false"
     env["HF_HOME"] = env.get("HF_HOME", "/content/huggingface")
-    model_args = (
-        f"pretrained={MODEL},load_in_4bit=True,torch_dtype=float16,device_map=auto"
-    )
+    # A100 has enough VRAM for FP16 evaluation of the 9B model. Training
+    # remains 4-bit QLoRA. The current lm-eval/Transformers path for
+    # Qwen3.5 does not accept load_in_4bit as a direct model constructor kwarg.
+    model_args = f"pretrained={MODEL},dtype=float16,device_map=auto"
     if adapter:
         model_args += f",peft={adapter}"
     run(

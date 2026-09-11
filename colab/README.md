@@ -58,6 +58,10 @@ If Colab gives you an A100, use the larger pilot:
 The A100 config uses 2,048-token sequences, BF16 and 300 steps. Start with
 the smoke test before spending the remaining runtime.
 
+For evaluation, the helper loads the 9B base in FP16 because an A100 has
+enough VRAM and the current `lm-eval` Transformers backend does not accept
+`load_in_4bit` directly for Qwen3.5. Training still uses NF4 QLoRA.
+
 ## If the 16GB runtime runs out of memory
 
 Run the smoke config first. If it still fails:
