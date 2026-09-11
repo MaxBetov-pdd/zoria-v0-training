@@ -109,7 +109,7 @@ def benchmark(adapter: str | None = None, full: bool = False) -> None:
         "--apply_chat_template",
         "--confirm_run_unsafe_code",
         "--output_path",
-        "eval-results/qwen35-9b-colab"
+        "eval-results/qwen35-9b-colab-nothink"
         + ("-adapter" if adapter else "-base")
         + ("-full" if full else "-smoke"),
         "--log_samples",
