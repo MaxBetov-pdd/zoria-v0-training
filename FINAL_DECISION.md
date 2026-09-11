@@ -130,6 +130,21 @@ bash scripts/run_4xa100_primary.sh
 Запустить rank 32 и rank 128 на тех же данных. Выбрать checkpoint по
 украинскому приросту при минимальной деградации English/code/math/reasoning.
 
+## Colab pilot
+
+Перед Lambda используем свежую практичную промежуточную модель:
+
+```text
+Qwen/Qwen3.5-9B
+BitsAndBytes NF4
+QLoRA
+text-only Ukrainian SFT
+```
+
+Для неё добавлены отдельные smoke/pilot-конфиги и Python runner в `colab/`.
+Этот этап проверяет data pipeline, QLoRA и evaluation; финальной моделью
+остаётся Qwen3.8-Flash-Next.
+
 ## Решение по предложенному серверу
 
 ```text

@@ -23,6 +23,9 @@ driver 570.26 or newer.
 - `configs/qwen3.8-flash-next-qlora-4xa100-smoke.yaml` — selected smoke test.
 - `configs/qwen3.8-flash-next-qlora-4xa100-smoke.yaml` — 20-step FSDP smoke
   test.
+- `colab/README.md` — Google Colab pilot instructions for Qwen3.5-9B.
+- `colab/qwen35_9b_colab.py` — prepare, baseline, smoke, train and benchmark
+  runner.
 - `VPS_CHECKLIST.md` — provider checks and stop conditions.
 - `benchmarks/ukrainian-llm-leaderboard` — pinned evaluation repository at
   commit `74d8069`.

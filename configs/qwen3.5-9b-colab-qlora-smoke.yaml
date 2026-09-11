@@ -1,0 +1,60 @@
+# Zoria Colab smoke test.
+# Target: Qwen3.5-9B, 16GB GPU, text-only NF4 QLoRA.
+
+base_model: Qwen/Qwen3.5-9B
+strict: false
+chat_template: qwen3_5
+
+plugins:
+  - axolotl.integrations.cut_cross_entropy.CutCrossEntropyPlugin
+
+datasets:
+  - path: ./data/processed-colab/zoria_v0_train.jsonl
+    type: chat_template
+    field_messages: messages
+
+dataset_prepared_path: ./data/prepared-colab-smoke
+val_set_size: 0.02
+output_dir: ./outputs/zoria-qwen35-9b-smoke
+
+sequence_len: 512
+sample_packing: false
+train_on_inputs: false
+
+load_in_4bit: true
+adapter: qlora
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - linear_attn.in_proj_qkv
+  - linear_attn.in_proj_z
+  - linear_attn.out_proj
+
+gradient_accumulation_steps: 8
+micro_batch_size: 1
+max_steps: 20
+optimizer: adamw_bnb_8bit
+lr_scheduler: cosine
+learning_rate: 0.0001
+warmup_ratio: 0.1
+weight_decay: 0.01
+
+bf16: false
+fp16: true
+tf32: false
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: true
+activation_offloading: true
+attn_implementation: sdpa
+
+logging_steps: 1
+eval_steps: 10
+save_steps: 20
+save_total_limit: 1
+seed: 42
